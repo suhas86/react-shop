@@ -1,12 +1,34 @@
 "use strict"
 
-export function bookReducers(state = { books: [] }, action) {
+export function bookReducers(state = {
+        books: [{
+                id: 1,
+                title: 'This is book title',
+                description: 'This is book description',
+                price: 50.0
+            },
+            {
+                id: 2,
+                title: 'This is second book title',
+                description: 'This is second book description',
+                price: 43.3
+            }
+        ]
+    },
+    action) {
     switch (action.type) {
+        case "GET_BOOKS":
+            return { ...state,
+                books: [...state.books]
+            };
+
         case "POST_BOOK":
             // const books = state.books.concat(action.payload);
             // return {books};
             //Instead we can use spread operator
-            return { books: [...state.books, ...action.payload] }
+            return {
+                books: [...state.books, ...action.payload]
+            }
         case "DELETE_BOOK":
             //Create a copy of current book array
             const currentBookToDelete = [...state.books];
@@ -19,7 +41,8 @@ export function bookReducers(state = { books: [] }, action) {
             //Use slice to remove the book
             return {
                 books: [...currentBookToDelete.slice(0, indexToDelete),
-                ...currentBookToDelete.slice(indexToDelete + 1)]
+                    ...currentBookToDelete.slice(indexToDelete + 1)
+                ]
             };
 
         case "UPDATE_BOOK":
@@ -38,11 +61,11 @@ export function bookReducers(state = { books: [] }, action) {
             console.log("New book to update", newBookToUpdate);
 
             return {
-                books:
-                [...currentBookToUpdate.slice(0, indexToUpdate),
+                books: [...currentBookToUpdate.slice(0, indexToUpdate),
                     newBookToUpdate,
-                ...currentBookToUpdate.slice(indexToUpdate +
-                    1)]
+                    ...currentBookToUpdate.slice(indexToUpdate +
+                        1)
+                ]
             }
 
     }
