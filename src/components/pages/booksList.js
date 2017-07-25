@@ -1,40 +1,50 @@
 "use strict"
 
-import React, {Component} from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {getBooks} from '../../actions/booksActions';
+import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+import { getBooks } from '../../actions/booksActions';
+import { Grid, Col, Row, Button } from 'react-bootstrap';
 
-class BookList extends Component{
-    componentDidMount(){
+import BookItem from './bookItem';
+import BooksForm from './booksForm';
+import Cart from './cart';
+
+class BookList extends Component {
+    componentDidMount() {
         this.props.getBooks();
     }
-    render(){
+    render() {
 
-        const booksList=this.props.books.map((book)=>{
+        const booksList = this.props.books.map((book) => {
             return (
-                <div key={book.id}>
-                    <h2>{book.title}</h2>
-                    <h2>{book.description}</h2>
-                    <h2>{book.price}</h2>
-                </div>
+                <Col xs={12} md={4} sm={6} key={book._id}>
+                    <BookItem book={book} />
+                </Col>
             )
         });
 
         return (
-            <div>
-                <h1>Book List</h1>
-                {booksList}
-            </div>
+            <Grid>
+                <Row>
+                    <Cart />
+                </Row>
+                <Row style={{ marginTop: '15px' }}>
+                    <Col xs={12} sm={6}>
+                        <BooksForm />
+                    </Col>
+                    {booksList}
+                </Row>
+            </Grid>
         )
     }
 }
-function mapStateToProps(state){
+function mapStateToProps(state) {
     return {
-        books:state.books.books
+        books: state.books.books
     }
 }
-function mapDispatchToProps(dispatch){
-    return bindActionCreators({getBooks:getBooks},dispatch)
+function mapDispatchToProps(dispatch) {
+    return bindActionCreators({ getBooks: getBooks }, dispatch)
 }
-export default connect (mapStateToProps,mapDispatchToProps) (BookList);
+export default connect(mapStateToProps, mapDispatchToProps)(BookList);

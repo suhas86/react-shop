@@ -1,24 +1,25 @@
 "use strict"
 
 export function bookReducers(state = {
-        books: [{
-                id: 1,
-                title: 'This is book title',
-                description: 'This is book description',
-                price: 50.0
-            },
-            {
-                id: 2,
-                title: 'This is second book title',
-                description: 'This is second book description',
-                price: 43.3
-            }
-        ]
+    books: [{
+        _id: 1,
+        title: 'This is book title',
+        description: 'This is book description',
+        price: 50.0
     },
+    {
+        _id: 2,
+        title: 'This is second book title',
+        description: 'This is second book description',
+        price: 43.3
+    }
+    ]
+},
     action) {
     switch (action.type) {
         case "GET_BOOKS":
-            return { ...state,
+            return {
+                ...state,
                 books: [...state.books]
             };
 
@@ -35,13 +36,13 @@ export function bookReducers(state = {
             //Determine at which index in the book array needs to be deleted
             const indexToDelete = currentBookToDelete.findIndex(
                 (book) => {
-                    return book.id == action.payload.id;
+                    return book._id == action.payload._id;
                 }
             )
             //Use slice to remove the book
             return {
                 books: [...currentBookToDelete.slice(0, indexToDelete),
-                    ...currentBookToDelete.slice(indexToDelete + 1)
+                ...currentBookToDelete.slice(indexToDelete + 1)
                 ]
             };
 
@@ -49,7 +50,7 @@ export function bookReducers(state = {
             const currentBookToUpdate = [...state.books];
             const indexToUpdate = currentBookToUpdate.findIndex(
                 (book) => {
-                    return book.id == action.payload.id;
+                    return book._id == action.payload._id;
                 }
             )
 
@@ -63,8 +64,8 @@ export function bookReducers(state = {
             return {
                 books: [...currentBookToUpdate.slice(0, indexToUpdate),
                     newBookToUpdate,
-                    ...currentBookToUpdate.slice(indexToUpdate +
-                        1)
+                ...currentBookToUpdate.slice(indexToUpdate +
+                    1)
                 ]
             }
 
