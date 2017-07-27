@@ -14,8 +14,10 @@ import reducer from './reducers/index';
 //IMPORT ACTIONS
 import {addToCart} from './actions/cartActions';
 import {postBooks,updateBook,deleteBook} from './actions/booksActions'
+//THUNK
+import thunk from 'redux-thunk';
 //Step 1 create the store
-const middleware=applyMiddleware(logger);
+const middleware=applyMiddleware(thunk,logger);
 const store = createStore(reducer,middleware);
 
 //No need of this as we are using looger

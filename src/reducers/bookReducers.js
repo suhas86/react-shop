@@ -1,26 +1,13 @@
 "use strict"
 
 export function bookReducers(state = {
-    books: [{
-        _id: 1,
-        title: 'This is book title',
-        description: 'This is book description',
-        price: 50.0
-    },
-    {
-        _id: 2,
-        title: 'This is second book title',
-        description: 'This is second book description',
-        price: 43.3
-    }
-    ]
+    books: []
 },
     action) {
     switch (action.type) {
         case "GET_BOOKS":
             return {
-                ...state,
-                books: [...state.books]
+                ...state, books: [...state.books, ...action.payload]
             };
 
         case "POST_BOOK":
@@ -34,7 +21,7 @@ export function bookReducers(state = {
             //Create a copy of current book array
             const currentBookToDelete = [...state.books];
             //Determine at which index in the book array needs to be deleted
-            console.log("DELETE Action",action.payload)
+            console.log("DELETE Action", action.payload)
             const indexToDelete = currentBookToDelete.findIndex(
                 (book) => {
                     return book._id == action.payload;

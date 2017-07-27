@@ -77,7 +77,7 @@ app.put('/books/:_id', function (req, res) {
       title: book.title,
       description: book.description,
       price: book.price,
-      image : book.image
+      images : book.image
     }
   }
 
