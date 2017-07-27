@@ -1,8 +1,11 @@
 "use strict"
 //REACT
 import React from 'react';
+
 import {render} from 'react-dom';
 import { Provider } from 'react-redux';
+//ROUTER
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { applyMiddleware, createStore } from 'redux';
 import logger from 'redux-logger';
@@ -23,26 +26,27 @@ const store = createStore(reducer,middleware);
 //Step 2 create and dispatch actions
 
 import BookList from './components/pages/booksList';
+import Menu from './components/menu';
+import Footer from './components/footer';
+import Cart from './components/pages/cart';
+import BooksForm from './components/pages/booksForm';
+const Routes = (
+  <Provider store={store}>
+      <BrowserRouter>
+        <div>
+        <Menu/>
+        <Switch>
+            <Route path="/admin" component={BooksForm}/>
+            <Route path="/cart" component={Cart}/>
+            <Route exact path="/" component={BookList}/>
+        </Switch>
+        <Footer />
+        </div>
+      </BrowserRouter>
+  </Provider>
+)
 
 render(
-    <Provider store={store}>
-        <BookList />
-    </Provider>
-    , document.getElementById('app')
+  Routes, document.getElementById('app')
 );
 
-//store.dispatch(postBooks());
-
-/*
-//Delete a book
-store.dispatch(deleteBook({id:1}));
-
-//Update a book
-store.dispatch(updateBook({
-        id: 2,
-        title: "Learn MERN Stack"
-    }))
-
-// Cart Actions 
-store.dispatch(addToCart([{id:2}]))
-*/

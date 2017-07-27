@@ -14,10 +14,10 @@ export function postBooks(book) {
 }
 
 //Delete a book
-export function deleteBook(book) {
+export function deleteBook(id) {
     return {
         type: "DELETE_BOOK",
-        payload: book
+        payload: id
     }
 }
 //Update a book
