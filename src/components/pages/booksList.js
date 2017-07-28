@@ -30,9 +30,7 @@ class BookList extends Component {
                     <Cart />
                 </Row>
                 <Row style={{ marginTop: '15px' }}>
-                    <Col xs={12} sm={6}>
-                        <BooksForm />
-                    </Col>
+                    
                     {booksList}
                 </Row>
             </Grid>

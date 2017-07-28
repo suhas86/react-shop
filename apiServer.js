@@ -121,6 +121,28 @@ app.put('/books/:_id', function (req, res) {
     }
   })
 });
+
+//GET BOOKS IMAGE API
+app.get('/images',function(req,res){
+  const imgFolder=__dirname+'/public/images/';
+
+  const fs=require('fs');
+  //READ ALL FILES
+  fs.readdir(imgFolder,function(err,files){
+    if(err){
+      return console.error(err);
+    } else {
+      //CREATE AN EMPTY ARRAY
+      const filesArr=[];
+      //Iterate all images in the directory & add to the array
+      files.forEach(function(file){
+        filesArr.push({name:file});
+      })
+      //SEND JSON RESPONSE
+      res.json(filesArr);
+    }
+  })
+});
 //ENDAPIS
 
 app.listen(3001, function (err) {

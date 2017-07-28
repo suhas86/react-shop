@@ -7,11 +7,11 @@ export function getCart(){
             dispatch({
                 type:'GET_CART',
                 payload:response.data
-            }).catch((err)=>{
-                dispatch({
+            })
+        }).catch((err)=>{
+            dispatch({
                 type: 'ERROR_GET_CART',
                 msg: err
-            })
             })
         })
     }
