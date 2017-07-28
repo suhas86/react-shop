@@ -5,6 +5,9 @@ var logger = require('morgan');
 
 var app = express();
 
+//For SESSION
+const session = require('express-session');
+const MongoStore = require('connect-mongo')(session);
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -17,6 +20,40 @@ app.use(cookieParser());
 //APIS
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost:27017/bookshop');
+
+var db = mongoose.connection;
+db.on('error', console.error.bind(console, '#MongoDB - connection error'));
+//------>>>>>SET UP SESSIONS <<<<<-------
+
+app.use(session({
+  secret: 'mySecretString',
+  saveUninitialized: false,
+  resave: true,
+  cookie: { maxAge: 1000 * 60 * 60 * 24 * 2 },
+  store: new MongoStore({ mongooseConnection: db, ttl: 2 * 24 * 60 * 60 })
+}))
+
+//SAVE TO SESSION
+app.post('/cart', function (req, res) {
+  var cart = req.body;
+  req.session.cart = cart;
+  req.session.save(function (err) {
+    if (err) {
+      throw err;
+    }
+
+    res.json(req.session.cart);
+  })
+})
+
+//GET SESSION CART API
+app.get('/cart', function (req, res) {
+  if (typeof req.session.cart != 'undefined') {
+    res.json(req.session.cart);
+  }
+})
+
+//------>>>>>END SESSION SET UP <<<<<<<----------
 
 var Books = require('./models/books.js');
 //------>>>>>>>Post API <<<<<<-------//
@@ -61,13 +98,13 @@ app.put('/books/:_id', function (req, res) {
     _id: req.params._id
   };
 
-//If field doesnt exists $set will add the field
+  //If field doesnt exists $set will add the field
   var update = {
     '$set': {
       title: book.title,
       description: book.description,
       price: book.price,
-      images : book.image
+      images: book.image
     }
   }
 
@@ -86,10 +123,10 @@ app.put('/books/:_id', function (req, res) {
 });
 //ENDAPIS
 
-app.listen(3001,function(err){
-  if(err){
+app.listen(3001, function (err) {
+  if (err) {
     return console.log(err);
-  }  
-    console.log("Api server is listening at 3001")
-  
+  }
+  console.log("Api server is listening at 3001")
+
 })

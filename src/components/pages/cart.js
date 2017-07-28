@@ -4,8 +4,11 @@ import { connect } from 'react-redux';
 import { Modal, Panel, Col, Row, Well, Button, ButtonGroup, Label } from 'react-bootstrap';
 
 import { bindActionCreators } from 'redux';
-import { deleteFromCart, updateCart } from '../../actions/cartActions'
+import { deleteFromCart, updateCart, getCart } from '../../actions/cartActions'
 class Cart extends Component {
+    componentDidMount(){
+        this.props.getCart();
+    }
     constructor() {
         super();
         this.state = {
@@ -51,12 +54,12 @@ class Cart extends Component {
     }
 
     onIncrement(_id) {
-        this.props.updateCart(_id, 1)
+        this.props.updateCart(_id, 1, this.props.cart)
     }
 
     onDecrement(_id, quantity) {
         if (quantity > 1)
-            this.props.updateCart(_id, -1)
+            this.props.updateCart(_id, -1, this.props.cart)
     }
 
     renderCart() {
@@ -97,9 +100,9 @@ class Cart extends Component {
                 <Row>
                     <Col xs={12}>
                         <h6>Total $ {this.props.totalAmount}</h6>
-                        <Button 
-                        onClick={this.open.bind(this)}
-                        bsStyle="success" bsSize="small">
+                        <Button
+                            onClick={this.open.bind(this)}
+                            bsStyle="success" bsSize="small">
                             Proceed To Checkout
                     </Button>
                     </Col>
@@ -114,7 +117,7 @@ class Cart extends Component {
                     </Modal.Body>
                     <Modal.Footer>
                         <Col xs={6}>
-                        <h6>Total $ {this.props.totalAmount}</h6>
+                            <h6>Total $ {this.props.totalAmount}</h6>
                         </Col>
                         <Button onClick={this.close.bind(this)}>Close</Button>
                     </Modal.Footer>
@@ -126,8 +129,8 @@ class Cart extends Component {
 function mapStateToProps(state) {
     return {
         cart: state.cart.cart,
-        totalAmount:state.cart.totalAmount,
-        totalQuantity:state.cart.totalQuantity
+        totalAmount: state.cart.totalAmount,
+        totalQuantity: state.cart.totalQuantity
     }
 }
-export default connect(mapStateToProps, { deleteFromCart, updateCart })(Cart);
+export default connect(mapStateToProps, { deleteFromCart, updateCart,getCart })(Cart);

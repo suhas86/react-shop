@@ -11,7 +11,7 @@ app.use(logger('dev'));
 
 //PROXY TO API
 const apiProxy = httpProxy.createProxyServer({
-  target:"http://localhost:3001",
+  target:"http://localhost:3001", 
   changeOrigin: true
 });
 app.use('/api', function(req, res){
