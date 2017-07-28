@@ -14,9 +14,18 @@ export function bookReducers(state = {
             // const books = state.books.concat(action.payload);
             // return {books};
             //Instead we can use spread operator
-            return {
-                books: [...state.books, ...action.payload]
+            return {...state,
+                books: [...state.books, ...action.payload],
+                msg:'Saved! click to continue',style:'success'
             }
+        case "POST_BOOK_REJECTED":
+            return {
+                ...state, msg:'Please try again',style:'danger'
+            }
+        case "RESET_BOOK":
+            return {
+                ...state, msg:'',style:'primary'
+            }    
         case "DELETE_BOOK":
             //Create a copy of current book array
             const currentBookToDelete = [...state.books];

@@ -8,25 +8,25 @@ import { connect } from 'react-redux';
 import { findDOMNode } from 'react-dom';
 import { bindActionCreators } from 'redux';
 
-import { postBooks, deleteBook, getBooks } from '../../actions/booksActions'
+import { postBooks, deleteBook, getBooks, resetBook } from '../../actions/booksActions'
 import axios from 'axios';
 
 class BooksForm extends Component {
-    constructor(){
+    constructor() {
         super();
-        this.state={
-            images:[{}],
-            img:''
+        this.state = {
+            images: [{}],
+            img: ''
         }
 
     }
-    componentDidMount(){
+    componentDidMount() {
         this.props.getBooks();
         //GET IMAGES FROM SERVER
-        axios.get('/api/images').then((response)=>{
-          this.setState({images:response.data})
-        }).catch ((err)=>{
-            this.setState({images:'Oops Something gone wrong'})
+        axios.get('/api/images').then((response) => {
+            this.setState({ images: response.data })
+        }).catch((err) => {
+            this.setState({ images: 'Oops Something gone wrong' })
         })
     }
     handleSubmit() {
@@ -34,7 +34,7 @@ class BooksForm extends Component {
             title: findDOMNode(this.refs.title).value,
             description: findDOMNode(this.refs.description).value,
             price: findDOMNode(this.refs.price).value,
-            images:findDOMNode(this.refs.image).value
+            images: findDOMNode(this.refs.image).value
         }]
         console.log("Before Post")
         this.props.postBooks(book);
@@ -43,10 +43,18 @@ class BooksForm extends Component {
         const _id = findDOMNode(this.refs.delete).value;
         this.props.deleteBook(_id);
     }
-    handleSelect(name){
+    handleSelect(name) {
         this.setState({
-            img:'/images/'+name
+            img: '/images/' + name
         })
+    }
+    resetForm() {
+        this.props.resetBook();
+        findDOMNode(this.refs.title).value = "";
+        findDOMNode(this.refs.description).value = "";
+        findDOMNode(this.refs.price).value = "";
+        this.setState({ img: '' })
+
     }
     render() {
         const bookList = this.props.books.map((book) => {
@@ -55,14 +63,14 @@ class BooksForm extends Component {
             )
         })
 
-        const imgList=this.state.images.map((image,i)=>{
+        const imgList = this.state.images.map((image, i) => {
             return (
                 <MenuItem key={i} eventKey={image.name}
-                onClick={this.handleSelect.bind(this,image.name)}>
-                {image.name}
+                    onClick={this.handleSelect.bind(this, image.name)}>
+                    {image.name}
                 </MenuItem>
             )
-        },this)
+        }, this)
         return (
             <Well>
                 <Row>
@@ -108,7 +116,10 @@ class BooksForm extends Component {
                                         ref="price" />
                                 </ControlLabel>
                             </FormGroup>
-                            <Button onClick={this.handleSubmit.bind(this)} bsStyle="primary">Save Book</Button>
+                            <Button onClick={(!this.props.msg) ? (this.handleSubmit.bind(this)) : (this.resetForm.bind(this))}
+                                bsStyle={(!this.props.style) ? ('primary') : (this.props.style)}>
+                                {(!this.props.msg) ? ('Save Book') : (this.props.msg)}
+                            </Button>
                         </Panel>
                         <Panel style={{ marginTop: '25px' }}>
                             <FormGroup controlId="formControlsSelect">
@@ -131,12 +142,14 @@ class BooksForm extends Component {
 }
 function mapDispatchToProps(dispatch) {
 
-    return bindActionCreators({ postBooks, deleteBook,getBooks }, dispatch)
+    return bindActionCreators({ postBooks, deleteBook, getBooks, resetBook }, dispatch)
 
 }
 function mapStateToProps(state) {
     return {
-        books: state.books.books
+        books: state.books.books,
+        msg: state.books.msg,
+        style: state.books.style
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BooksForm);
