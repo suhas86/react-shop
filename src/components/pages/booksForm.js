@@ -92,28 +92,34 @@ class BooksForm extends Component {
                     </Col>
                     <Col xs={12} sm={6}>
                         <Panel>
-                            <FormGroup controlId="title">
+                            <FormGroup controlId="title"
+                                validationState={this.props.validation}>
                                 <ControlLabel>
                                     <FormControl
                                         type="text"
                                         placeholder="Enter title"
                                         ref="title" />
+                                    <FormControl.Feedback />
                                 </ControlLabel>
                             </FormGroup>
-                            <FormGroup controlId="description">
+                            <FormGroup controlId="description"
+                                validationState={this.props.validation}>
                                 <ControlLabel>
                                     <FormControl
                                         type="text"
                                         placeholder="Enter Description"
                                         ref="description" />
+                                        <FormControl.Feedback />
                                 </ControlLabel>
                             </FormGroup>
-                            <FormGroup controlId="price">
+                            <FormGroup controlId="price"
+                                validationState={this.props.validation}>
                                 <ControlLabel>
                                     <FormControl
                                         type="text"
                                         placeholder="Enter Price"
                                         ref="price" />
+                                    <FormControl.Feedback />
                                 </ControlLabel>
                             </FormGroup>
                             <Button onClick={(!this.props.msg) ? (this.handleSubmit.bind(this)) : (this.resetForm.bind(this))}
@@ -128,6 +134,7 @@ class BooksForm extends Component {
                                     <option value="select">select</option>
                                     {bookList}
                                 </FormControl>
+                                <FormControl.Feedback />
                             </FormGroup>
                             <Button
                                 onClick={this.handleDelete.bind(this)}
@@ -149,7 +156,8 @@ function mapStateToProps(state) {
     return {
         books: state.books.books,
         msg: state.books.msg,
-        style: state.books.style
+        style: state.books.style,
+        validation: state.books.validation
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(BooksForm);

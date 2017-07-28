@@ -39,7 +39,7 @@ app.post('/cart', function (req, res) {
   req.session.cart = cart;
   req.session.save(function (err) {
     if (err) {
-      throw err;
+      console.log(err);
     }
 
     res.json(req.session.cart);
@@ -61,7 +61,7 @@ app.post('/books', function (req, res) {
   var book = req.body;
   Books.create(book, function (err, books) {
     if (err) {
-      throw err;
+      console.log(err);
     } else {
       res.json(books);
     }
@@ -72,7 +72,7 @@ app.post('/books', function (req, res) {
 app.get('/books', function (req, res) {
   Books.find(function (err, books) {
     if (err) {
-      throw err;
+      console.log(err);
     } else {
       res.json(books);
     }
@@ -85,7 +85,7 @@ app.delete('/books/:_id', function (req, res) {
   };
   Books.remove(query, function (err, books) {
     if (err) {
-      throw err;
+      console.log(err);
     } else {
       res.json(books);
     }
@@ -115,7 +115,7 @@ app.put('/books/:_id', function (req, res) {
 
   Books.findOneAndUpdate(query, update, options, function (err, books) {
     if (err) {
-      throw err;
+      console.log(err);
     } else {
       res.json(books);
     }
@@ -123,20 +123,20 @@ app.put('/books/:_id', function (req, res) {
 });
 
 //GET BOOKS IMAGE API
-app.get('/images',function(req,res){
-  const imgFolder=__dirname+'/public/images/';
+app.get('/images', function (req, res) {
+  const imgFolder = __dirname + '/public/images/';
 
-  const fs=require('fs');
+  const fs = require('fs');
   //READ ALL FILES
-  fs.readdir(imgFolder,function(err,files){
-    if(err){
+  fs.readdir(imgFolder, function (err, files) {
+    if (err) {
       return console.error(err);
     } else {
       //CREATE AN EMPTY ARRAY
-      const filesArr=[];
+      const filesArr = [];
       //Iterate all images in the directory & add to the array
-      files.forEach(function(file){
-        filesArr.push({name:file});
+      files.forEach(function (file) {
+        filesArr.push({ name: file });
       })
       //SEND JSON RESPONSE
       res.json(filesArr);

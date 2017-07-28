@@ -16,15 +16,17 @@ export function bookReducers(state = {
             //Instead we can use spread operator
             return {...state,
                 books: [...state.books, ...action.payload],
-                msg:'Saved! click to continue',style:'success'
+                msg:'Saved! click to continue',style:'success',
+                validation:'success'
             }
         case "POST_BOOK_REJECTED":
             return {
-                ...state, msg:'Please try again',style:'danger'
+                ...state, msg:'Please try again',style:'danger',
+                validation:'error'
             }
         case "RESET_BOOK":
             return {
-                ...state, msg:'',style:'primary'
+                ...state, msg:'',style:'primary',validation:null
             }    
         case "DELETE_BOOK":
             //Create a copy of current book array

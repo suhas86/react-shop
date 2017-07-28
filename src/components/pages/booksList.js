@@ -4,7 +4,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { getBooks } from '../../actions/booksActions';
-import { Grid, Col, Row, Button } from 'react-bootstrap';
+import { Grid, Col, Row, Button, Carousel } from 'react-bootstrap';
 
 import BookItem from './bookItem';
 import BooksForm from './booksForm';
@@ -27,10 +27,28 @@ class BookList extends Component {
         return (
             <Grid>
                 <Row>
+                    <Carousel>
+                        <Carousel.Item>
+                            <img width={900} height={500} alt="900x500" src="/images/banner1.jpg" />
+                            <Carousel.Caption>
+                                <h3>First slide label</h3>
+                                <p>Some Text.</p>
+                            </Carousel.Caption>
+                        </Carousel.Item>
+                        <Carousel.Item>
+                            <img width={900} height={500} alt="900x500" src="/images/banner2.jpg" />
+                            <Carousel.Caption>
+                                <h3>Second slide label</h3>
+                                <p>Some Text.</p>
+                            </Carousel.Caption>
+                        </Carousel.Item>
+                    </Carousel>
+                </Row>
+                <Row>
                     <Cart />
                 </Row>
                 <Row style={{ marginTop: '15px' }}>
-                    
+
                     {booksList}
                 </Row>
             </Grid>
